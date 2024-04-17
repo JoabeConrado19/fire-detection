@@ -1,10 +1,29 @@
-from ultralytics import YOLO
 import cv2
-from windowcapture import WindowCapture
-from collections import defaultdict
 import numpy as np
+from ultralytics import YOLO
+from collections import defaultdict
+import pygetwindow as gw
+import pyautogui
 
+# Função para encontrar uma janela pelo título
+def find_window_by_title(title):
+    for window in gw.getAllWindows():
+        print(window.title)
+        if window.title == title:
+            return window
+    return None
 
+# Nome da janela que você deseja capturar
+window_title = "Queimadas na Amazônia chocam o mundo - YouTube e mais 3 páginas - Pessoal — Microsoft​ Edge"
+
+# Encontra a janela desejada
+window = find_window_by_title(window_title)
+if window is None:
+    print("Janela não encontrada:", window_title)
+    exit()
+
+# Obtém as coordenadas da janela
+left, top, width, height = window.left, window.top, window.width, window.height
 
 # Carrega o modelo YOLO treinado com Among
 model = YOLO("fireAndSmokev2.pt")
@@ -13,16 +32,9 @@ track_history = defaultdict(lambda: [])
 seguir = True
 deixar_rastro = True
 
-# Caminho para o vídeo
-video_path = "video.mp4"  # Altere para o caminho do seu vídeo
-
-# Abre o vídeo
-cap = cv2.VideoCapture(video_path)
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
+while True:
+    # Captura a área da janela
+    frame = pyautogui.screenshot(region=(left, top, width, height))
 
     if seguir:
         results = model.track(frame, persist=True)
@@ -54,12 +66,11 @@ while cap.isOpened():
             except:
                 pass
 
-    cv2.imshow("Video", frame)
+    cv2.imshow("Window Capture", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-cap.release()
 cv2.destroyAllWindows()
 print("Desligando...")
 
