@@ -7,7 +7,7 @@ import numpy as np
 
 
 # Carrega o modelo YOLO treinado com Among
-model = YOLO("runs/detect/train9/weights/best.pt")
+model = YOLO("fireAndSmokev2.pt")
 
 track_history = defaultdict(lambda: [])
 seguir = True
