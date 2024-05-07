@@ -17,7 +17,7 @@ test:  smoke/test
 # Classes
 names:
   0: fire
+  1: smoke
 
- 
 
   # "c:\users\bobgreen\documents\pythonscripts\python_envs\yolov5env\scripts\python.exe"  "C:\Users\BobGreen\Documents\PythonScripts\python_envs\yolov5env\Scripts\tensorboard.exe" --logdir runs\train_among
